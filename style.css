@@ -10,6 +10,10 @@ ul {
   list-style: none;
 }
 
+button {
+  padding: 15px;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -33,6 +37,36 @@ section {
 
 .calculator-container {
   border: 2px solid black;
+  height: 50%;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.row-1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.power-bar {
+  display: flex;
+}
+
+.row-2 {
+  display: flex;
+  justify-content: center;
+}
+.row-3 {
+  display: flex;
+  justify-content: space-between;
+}
+.row-4,
+.row-5,
+.row-6,
+.row-7 {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 footer {
