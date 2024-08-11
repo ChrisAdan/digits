@@ -42,11 +42,14 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  padding: 15px;
 }
 
-.row-1 {
-  display: flex;
-  justify-content: space-between;
+.calculator-container button {
+  flex: 1;
+}
+button.off-button {
+  flex: 0;
 }
 
 .power-bar {
@@ -57,16 +60,21 @@ section {
   display: flex;
   justify-content: center;
 }
-.row-3 {
-  display: flex;
-  justify-content: space-between;
-}
+.row-1,
+.row-3,
 .row-4,
 .row-5,
 .row-6,
 .row-7 {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+[class*="row-7-"] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 footer {
