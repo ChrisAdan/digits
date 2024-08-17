@@ -1,5 +1,7 @@
 "use strict";
 
+export const MAX_DIGITS = 10;
+
 function add(x, y) {
   return x + y;
 }

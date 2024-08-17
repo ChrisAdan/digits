@@ -43,17 +43,37 @@ section {
   flex-direction: column;
   justify-content: space-evenly;
   padding: 15px;
+  font-size: 1.6rem;
+  font-weight: bold;
 }
 
 .calculator-container button {
   flex: 1;
+  background-color: lightgray;
 }
 button.off-button {
   flex: 0;
 }
 
+#add {
+  background-color: orangered;
+}
+
+button.active-operator {
+  background-color: red;
+}
+
 .power-bar {
   display: flex;
+}
+
+.display {
+  background-color: black;
+  color: white;
+  flex: 1;
+  text-align: right;
+  padding: 6px;
+  font-size: 2rem;
 }
 
 .row-2 {
