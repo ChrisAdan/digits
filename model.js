@@ -1,7 +1,10 @@
 "use strict";
 
 export const MAX_DIGITS = 10;
-
+export let data = {};
+export function getNewData() {
+  data = {};
+}
 function add(x, y) {
   return x + y;
 }

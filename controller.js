@@ -1,7 +1,7 @@
 "use strict";
 
 import { readDisplay, writeDisplay, clearDisplay } from "./view.js";
-import { MAX_DIGITS } from "./model.js";
+import { MAX_DIGITS, data, getNewData } from "./model.js";
 
 window.addEventListener("DOMContentLoaded", setup);
 
@@ -18,7 +18,6 @@ function setup() {
 
 const readKeyPress = (key) => {
   const target = { element: key.target };
-  console.log(target.element);
   target.action = target.element.classList[0];
   routeKeyPress(target);
 };
@@ -29,7 +28,9 @@ const routeKeyPress = (target) => {
   const currentActiveOperator = Array.from(calculatorKeys).find((key) => {
     return key.classList.contains("active-operator");
   });
-
+  if (currentActiveOperator) {
+    console.log(currentActiveOperator.getAttribute("id"));
+  }
   switch (target.action) {
     case "operator":
       console.log("clicked operator");
@@ -44,15 +45,25 @@ const routeKeyPress = (target) => {
       if (currentDisplay === "0") {
         writeDisplay(keyValue);
       } else if (currentDisplay.length < MAX_DIGITS) {
-        writeDisplay(currentDisplay.concat(keyValue));
-      } else if (currentActiveOperator) {
-        console.log("there is an active operator");
+        if (currentActiveOperator) {
+          console.log(`current display: ${currentDisplay}`);
+          const operand = +currentDisplay;
+          if (data.x) {
+            if (data.y) {
+              writeDisplay(currentDisplay.concat(keyValue));
+            } else {
+              writeDisplay(keyValue);
+            }
+            data.y = operand;
+          } else {
+            writeDisplay(keyValue);
+            data.x = operand;
+          }
+          console.log(data);
+        } else {
+          writeDisplay(currentDisplay.concat(keyValue));
+        }
       }
-      console.log(
-        Array.from(calculatorKeys).find((key) => {
-          return key.classList.contains("active-operator");
-        })
-      );
       break;
     case "decimal":
       if (!currentDisplay.includes(keyValue)) {
