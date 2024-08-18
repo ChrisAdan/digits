@@ -47,23 +47,21 @@ const routeKeyPress = (target) => {
       } else if (currentDisplay.length < MAX_DIGITS) {
         if (currentActiveOperator) {
           console.log(`current display: ${currentDisplay}`);
-          const operand = +currentDisplay;
           if (data.x) {
-            if (data.y) {
-              writeDisplay(currentDisplay.concat(keyValue));
-            } else {
-              writeDisplay(keyValue);
-            }
-            data.y = operand;
+            let operand = currentDisplay.concat(keyValue);
+            writeDisplay(operand);
+
+            data.y = +operand;
           } else {
             writeDisplay(keyValue);
-            data.x = operand;
+            data.x = +currentDisplay;
+            data.y = +keyValue;
           }
-          console.log(data);
         } else {
           writeDisplay(currentDisplay.concat(keyValue));
         }
       }
+      console.log(data);
       break;
     case "decimal":
       if (!currentDisplay.includes(keyValue)) {
@@ -72,6 +70,9 @@ const routeKeyPress = (target) => {
       break;
     case "equals":
       console.log("clicked equals");
+      if (currentActiveOperator) {
+        currentActiveOperator.classList.toggle("active-operator");
+      }
       break;
     case "clear":
       console.log("clicked clear");
@@ -79,6 +80,7 @@ const routeKeyPress = (target) => {
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
       }
+      getNewData();
       break;
     case "off-button":
       console.log("clicked off");
