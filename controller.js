@@ -1,7 +1,7 @@
 "use strict";
 
 import { readDisplay, writeDisplay, clearDisplay } from "./view.js";
-import { MAX_DIGITS, data, getNewData } from "./model.js";
+import { MAX_DIGITS, data, getNewData, operate, round } from "./model.js";
 
 window.addEventListener("DOMContentLoaded", setup);
 
@@ -28,8 +28,10 @@ const routeKeyPress = (target) => {
   const currentActiveOperator = Array.from(calculatorKeys).find((key) => {
     return key.classList.contains("active-operator");
   });
+  let operation;
   if (currentActiveOperator) {
     console.log(currentActiveOperator.getAttribute("id"));
+    operation = currentActiveOperator.getAttribute("id");
   }
   switch (target.action) {
     case "operator":
@@ -40,6 +42,19 @@ const routeKeyPress = (target) => {
       } else {
         target.element.classList.toggle("active-operator");
       }
+      break;
+    case "modifier":
+      console.log("clicked modifier");
+      data.x = +currentDisplay;
+      operation = target.element.getAttribute("id");
+      let result = operate(operation);
+      result = round(result);
+      if (!Number.isInteger(result)) {
+        result = round(result);
+      }
+      writeDisplay(result);
+      getNewData();
+      // data.x = +result;
       break;
     case "digit":
       if (currentDisplay === "0") {
@@ -65,13 +80,31 @@ const routeKeyPress = (target) => {
       break;
     case "decimal":
       if (!currentDisplay.includes(keyValue)) {
-        writeDisplay(currentDisplay.concat(keyValue));
+        if (currentActiveOperator) {
+          if (data.x) {
+            console.log("existing x");
+          } else {
+            writeDisplay("0".concat(keyValue));
+            data.x = +currentDisplay;
+          }
+        } else {
+          writeDisplay(currentDisplay.concat(keyValue));
+        }
+      } else if (currentDisplay === "0") {
+        writeDisplay("0".concat(keyValue));
       }
       break;
     case "equals":
       console.log("clicked equals");
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
+        let result = operate(operation);
+        if (!Number.isInteger(result)) {
+          result = round(result);
+        }
+        writeDisplay(result);
+        data.x = result;
+        getNewData();
       }
       break;
     case "clear":
