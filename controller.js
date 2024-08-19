@@ -1,6 +1,11 @@
 "use strict";
 
-import { readDisplay, writeDisplay, clearDisplay } from "./view.js";
+import {
+  readDisplay,
+  writeDisplay,
+  clearDisplay,
+  prevDisplays,
+} from "./view.js";
 import { MAX_DIGITS, data, getNewData, operate, round } from "./model.js";
 
 window.addEventListener("DOMContentLoaded", setup);
@@ -25,6 +30,7 @@ const readKeyPress = (key) => {
 const routeKeyPress = (target) => {
   const keyValue = target.element.textContent;
   const currentDisplay = readDisplay();
+
   const currentActiveOperator = Array.from(calculatorKeys).find((key) => {
     return key.classList.contains("active-operator");
   });
@@ -48,16 +54,18 @@ const routeKeyPress = (target) => {
       data.x = +currentDisplay;
       operation = target.element.getAttribute("id");
       let result = operate(operation);
-      result = round(result);
       if (!Number.isInteger(result)) {
         result = round(result);
       }
-      writeDisplay(result);
+      if (Number.isNaN(result)) {
+        writeDisplay("Invalid :(");
+      } else {
+        writeDisplay(result);
+      }
       getNewData();
-      // data.x = +result;
       break;
     case "digit":
-      if (currentDisplay === "0") {
+      if (currentDisplay === "0" || Number.isNaN(+currentDisplay)) {
         writeDisplay(keyValue);
       } else if (currentDisplay.length < MAX_DIGITS) {
         if (currentActiveOperator) {
@@ -99,12 +107,19 @@ const routeKeyPress = (target) => {
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
         let result = operate(operation);
-        if (!Number.isInteger(result)) {
-          result = round(result);
+        if (result) {
+          if (
+            !Number.isInteger(result) ||
+            result.toString().length > MAX_DIGITS
+          ) {
+            result = round(result);
+          }
+          writeDisplay(result);
+          data.x = result;
+          getNewData();
+        } else {
+          writeDisplay("Error :(");
         }
-        writeDisplay(result);
-        data.x = result;
-        getNewData();
       }
       break;
     case "clear":
@@ -123,6 +138,12 @@ const routeKeyPress = (target) => {
       }
 
       break;
+    case "undo":
+      console.log("clicked undo");
+      if (prevDisplays) {
+        const prevDisplay = prevDisplays.pop();
+        writeDisplay(prevDisplay, false);
+      }
   }
 };
 

@@ -82,5 +82,5 @@ function percentage(value) {
 }
 
 export function round(value) {
-  return Number(value.toFixed(DECIMAL_PLACES));
+  return Number(value.toPrecision(DECIMAL_PLACES));
 }
