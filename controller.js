@@ -142,7 +142,9 @@ const routeKeyPress = (target) => {
       console.log("clicked undo");
       if (prevDisplays) {
         const prevDisplay = prevDisplays.pop();
-        writeDisplay(prevDisplay, false);
+        if (prevDisplay) {
+          writeDisplay(prevDisplay, false);
+        }
       }
   }
 };
