@@ -31,11 +31,32 @@ const readKeyPress = (key) => {
       target.keyValue = target.element.textContent;
       break;
     case "keyup":
-      if (key.code.includes("Digit") && !key.shiftKey) {
-        console.log(+key.key);
+      console.log(key);
+      let code = key.code;
+      if (code.includes("Digit")) {
+        if (key.shiftKey && ["*", "^"].includes(key.key)) {
+          console.log("send operator");
+        } else {
+          console.log("send digit");
+        }
+      } else if (code === "Minus") {
+        console.log("subtract");
+      } else if (code === "Slash") {
+        console.log("divide");
+      } else if (code === "Period") {
+        console.log("decimal");
+      } else if (code === "Equal") {
+        if (key.shiftKey) {
+          console.log("add");
+        } else {
+          console.log("equal");
+        }
+      } else if (code === "Backspace") {
+        console.log("undo");
       }
+
+    // routeKeyPress(target);
   }
-  routeKeyPress(target);
 };
 
 const routeKeyPress = (target) => {
