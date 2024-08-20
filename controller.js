@@ -31,32 +31,52 @@ const readKeyPress = (key) => {
       target.keyValue = target.element.textContent;
       break;
     case "keyup":
-      console.log(key);
       let code = key.code;
+      let currentKey;
+      if (key.key === "Shift") {
+        return;
+      }
+      // Need to map the key pressed to the proper event handling
       if (code.includes("Digit")) {
-        if (key.shiftKey && ["*", "^"].includes(key.key)) {
-          console.log("send operator");
+        if (key.shiftKey && ["*", "^", "%"].includes(key.key)) {
+          if (key.key === "^") {
+            currentKey = document.querySelector("#x-power-y");
+          } else if (key.key === "*") {
+            currentKey = document.querySelector("#multiply");
+          } else if (key.key === "%") {
+            currentKey = document.querySelector("#percentage");
+          }
         } else {
-          console.log("send digit");
+          currentKey = Array.from(document.querySelectorAll(".digit")).find(
+            (button) => {
+              return button.getAttribute("data-key-value") === key.key;
+            }
+          );
         }
       } else if (code === "Minus") {
-        console.log("subtract");
+        currentKey = document.querySelector("#subtract");
       } else if (code === "Slash") {
-        console.log("divide");
+        currentKey = document.querySelector("#divide");
       } else if (code === "Period") {
-        console.log("decimal");
-      } else if (code === "Equal") {
+        currentKey = document.querySelector(".decimal");
+      } else if (code === "Equal" || code === "Enter") {
         if (key.shiftKey) {
-          console.log("add");
+          currentKey = document.querySelector("#add");
         } else {
-          console.log("equal");
+          currentKey = document.querySelector("#equals");
         }
       } else if (code === "Backspace") {
-        console.log("undo");
+        currentKey = document.querySelector(".undo");
+      } else if (code === "Escape") {
+        currentKey = document.querySelector(".clear");
       }
-
-    // routeKeyPress(target);
+      if (currentKey) {
+        target = { element: currentKey };
+        target.action = target.element.classList[0];
+        target.keyValue = target.element.textContent;
+      }
   }
+  routeKeyPress(target);
 };
 
 const routeKeyPress = (target) => {
@@ -67,12 +87,10 @@ const routeKeyPress = (target) => {
   });
   let operation;
   if (currentActiveOperator) {
-    console.log(currentActiveOperator.getAttribute("id"));
     operation = currentActiveOperator.getAttribute("id");
   }
   switch (target.action) {
     case "operator":
-      console.log("clicked operator");
       if (currentActiveOperator && currentActiveOperator != target.element) {
         currentActiveOperator.classList.toggle("active-operator");
         target.element.classList.toggle("active-operator");
@@ -81,7 +99,6 @@ const routeKeyPress = (target) => {
       }
       break;
     case "modifier":
-      console.log("clicked modifier");
       data.x = +currentDisplay;
       operation = target.element.getAttribute("id");
       let result = operate(operation);
@@ -100,7 +117,6 @@ const routeKeyPress = (target) => {
         writeDisplay(target.keyValue);
       } else if (currentDisplay.length < MAX_DIGITS) {
         if (currentActiveOperator) {
-          console.log(`current display: ${currentDisplay}`);
           if (data.x) {
             let operand = currentDisplay.concat(target.keyValue);
             writeDisplay(operand);
@@ -115,15 +131,14 @@ const routeKeyPress = (target) => {
           writeDisplay(currentDisplay.concat(target.keyValue));
         }
       }
-      console.log(data);
       break;
     case "decimal":
       if (!currentDisplay.includes(target.keyValue)) {
         if (currentActiveOperator) {
+          writeDisplay("0".concat(target.keyValue));
           if (data.x) {
-            console.log("existing x");
+            data.y = +currentDisplay;
           } else {
-            writeDisplay("0".concat(target.keyValue));
             data.x = +currentDisplay;
           }
         } else {
@@ -134,7 +149,6 @@ const routeKeyPress = (target) => {
       }
       break;
     case "equals":
-      console.log("clicked equals");
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
         let result = operate(operation);
@@ -154,7 +168,6 @@ const routeKeyPress = (target) => {
       }
       break;
     case "clear":
-      console.log("clicked clear");
       clearDisplay();
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
@@ -162,7 +175,6 @@ const routeKeyPress = (target) => {
       getNewData();
       break;
     case "off-button":
-      console.log("clicked off");
       writeDisplay("");
       if (currentActiveOperator) {
         currentActiveOperator.classList.toggle("active-operator");
@@ -170,7 +182,6 @@ const routeKeyPress = (target) => {
 
       break;
     case "undo":
-      console.log("clicked undo");
       if (prevDisplays) {
         const prevDisplay = prevDisplays.pop();
         if (prevDisplay) {
@@ -179,5 +190,3 @@ const routeKeyPress = (target) => {
       }
   }
 };
-
-// undo
