@@ -19,16 +19,26 @@ function setup() {
   Array.from(calculatorKeys).forEach((key) => {
     key.addEventListener("click", readKeyPress);
   });
+  window.addEventListener("keyup", readKeyPress);
 }
 
 const readKeyPress = (key) => {
-  const target = { element: key.target };
-  target.action = target.element.classList[0];
+  let target;
+  switch (key.type) {
+    case "click":
+      target = { element: key.target };
+      target.action = target.element.classList[0];
+      target.keyValue = target.element.textContent;
+      break;
+    case "keyup":
+      if (key.code.includes("Digit") && !key.shiftKey) {
+        console.log(+key.key);
+      }
+  }
   routeKeyPress(target);
 };
 
 const routeKeyPress = (target) => {
-  const keyValue = target.element.textContent;
   const currentDisplay = readDisplay();
 
   const currentActiveOperator = Array.from(calculatorKeys).find((key) => {
@@ -66,40 +76,40 @@ const routeKeyPress = (target) => {
       break;
     case "digit":
       if (currentDisplay === "0" || Number.isNaN(+currentDisplay)) {
-        writeDisplay(keyValue);
+        writeDisplay(target.keyValue);
       } else if (currentDisplay.length < MAX_DIGITS) {
         if (currentActiveOperator) {
           console.log(`current display: ${currentDisplay}`);
           if (data.x) {
-            let operand = currentDisplay.concat(keyValue);
+            let operand = currentDisplay.concat(target.keyValue);
             writeDisplay(operand);
 
             data.y = +operand;
           } else {
-            writeDisplay(keyValue);
+            writeDisplay(target.keyValue);
             data.x = +currentDisplay;
-            data.y = +keyValue;
+            data.y = +target.keyValue;
           }
         } else {
-          writeDisplay(currentDisplay.concat(keyValue));
+          writeDisplay(currentDisplay.concat(target.keyValue));
         }
       }
       console.log(data);
       break;
     case "decimal":
-      if (!currentDisplay.includes(keyValue)) {
+      if (!currentDisplay.includes(target.keyValue)) {
         if (currentActiveOperator) {
           if (data.x) {
             console.log("existing x");
           } else {
-            writeDisplay("0".concat(keyValue));
+            writeDisplay("0".concat(target.keyValue));
             data.x = +currentDisplay;
           }
         } else {
-          writeDisplay(currentDisplay.concat(keyValue));
+          writeDisplay(currentDisplay.concat(target.keyValue));
         }
       } else if (currentDisplay === "0") {
-        writeDisplay("0".concat(keyValue));
+        writeDisplay("0".concat(target.keyValue));
       }
       break;
     case "equals":
