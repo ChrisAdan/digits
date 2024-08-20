@@ -135,10 +135,15 @@ const routeKeyPress = (target) => {
     case "decimal":
       if (!currentDisplay.includes(target.keyValue)) {
         if (currentActiveOperator) {
-          writeDisplay("0".concat(target.keyValue));
           if (data.x) {
+            if (!+readDisplay()) {
+              writeDisplay("0".concat(target.keyValue));
+            } else {
+              writeDisplay(currentDisplay.concat(target.keyValue));
+            }
             data.y = +currentDisplay;
           } else {
+            writeDisplay("0".concat(target.keyValue));
             data.x = +currentDisplay;
           }
         } else {
