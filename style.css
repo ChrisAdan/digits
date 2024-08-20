@@ -40,6 +40,7 @@ section {
   height: 50%;
   min-width: 20%;
   display: flex;
+  flex-grow: 0;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 15px;
