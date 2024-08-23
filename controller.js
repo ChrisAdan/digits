@@ -75,8 +75,11 @@ const readKeyPress = (key) => {
         target.action = target.element.classList[0];
         target.keyValue = target.element.textContent;
       }
+      break;
   }
-  routeKeyPress(target);
+  if (target) {
+    routeKeyPress(target);
+  }
 };
 
 const routeKeyPress = (target) => {
@@ -91,6 +94,9 @@ const routeKeyPress = (target) => {
   }
   switch (target.action) {
     case "operator":
+      if (!data.x) {
+        data.x = +currentDisplay;
+      }
       if (currentActiveOperator && currentActiveOperator != target.element) {
         currentActiveOperator.classList.toggle("active-operator");
         target.element.classList.toggle("active-operator");
@@ -113,30 +119,42 @@ const routeKeyPress = (target) => {
       getNewData();
       break;
     case "digit":
+      let operand;
       if (currentDisplay === "0" || Number.isNaN(+currentDisplay)) {
         writeDisplay(target.keyValue);
-      } else if (currentDisplay.length < MAX_DIGITS) {
-        if (currentActiveOperator) {
-          if (data.x) {
-            let operand = currentDisplay.concat(target.keyValue);
-            writeDisplay(operand);
-
-            data.y = +operand;
+      } else if (currentActiveOperator) {
+        if (data.x) {
+          if (!data.y) {
+            operand = target.keyValue;
           } else {
-            writeDisplay(target.keyValue);
-            data.x = +currentDisplay;
-            data.y = +target.keyValue;
+            operand =
+              currentDisplay.length < MAX_DIGITS
+                ? currentDisplay.concat(target.keyValue)
+                : currentDisplay;
           }
+          writeDisplay(operand);
+          data.y = +operand;
         } else {
-          writeDisplay(currentDisplay.concat(target.keyValue));
+          operand =
+            currentDisplay.length < MAX_DIGITS
+              ? target.keyValue
+              : currentDisplay;
+          writeDisplay(operand);
+          data.x = +currentDisplay;
+          data.y = +target.keyValue;
         }
+      } else if (currentDisplay.length < MAX_DIGITS) {
+        writeDisplay(currentDisplay.concat(target.keyValue));
       }
       break;
     case "decimal":
-      if (!currentDisplay.includes(target.keyValue)) {
+      if (
+        !currentDisplay.includes(target.keyValue) ||
+        +currentDisplay === data.x
+      ) {
         if (currentActiveOperator) {
           if (data.x) {
-            if (!+readDisplay()) {
+            if (+currentDisplay === data.x) {
               writeDisplay("0".concat(target.keyValue));
             } else {
               writeDisplay(currentDisplay.concat(target.keyValue));
@@ -165,8 +183,8 @@ const routeKeyPress = (target) => {
             result = round(result);
           }
           writeDisplay(result);
-          data.x = result;
           getNewData();
+          // data.x = result;
         } else {
           writeDisplay("Error :(");
         }
@@ -190,7 +208,9 @@ const routeKeyPress = (target) => {
       if (prevDisplays) {
         const prevDisplay = prevDisplays.pop();
         if (prevDisplay) {
-          writeDisplay(prevDisplay, false);
+          writeDisplay(prevDisplay.display, false);
+          data.x = prevDisplay.x;
+          data.y = prevDisplay.y;
         }
       }
   }
