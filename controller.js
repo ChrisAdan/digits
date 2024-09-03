@@ -197,13 +197,7 @@ const routeKeyPress = (target) => {
       }
       getNewData();
       break;
-    case "off-button":
-      writeDisplay("");
-      if (currentActiveOperator) {
-        currentActiveOperator.classList.toggle("active-operator");
-      }
 
-      break;
     case "undo":
       if (prevDisplays) {
         const prevDisplay = prevDisplays.pop();

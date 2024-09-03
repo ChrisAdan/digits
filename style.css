@@ -45,11 +45,12 @@ section {
   padding: 15px;
   font-size: 1.6rem;
   font-weight: bold;
+  gap: 12px;
 }
 
 .calculator-container button {
-  flex: 1;
   background-color: lightgray;
+  border-radius: 12px;
 }
 button.off-button {
   flex: 0;
@@ -57,11 +58,9 @@ button.off-button {
 
 .calculator-keys {
   display: flex;
+  gap: 4px;
   justify-content: space-evenly;
 }
-/* #add {
-  background-color: aqua;
-} */
 
 button.active-operator {
   background-color: red;
@@ -69,6 +68,15 @@ button.active-operator {
 
 .power-bar {
   display: flex;
+  width: 25%;
+  height: 100%;
+  border: 2px solid red;
+  background-color: yellow;
+}
+
+.power-cell {
+  border: 2px solid green;
+  flex: 1;
 }
 
 .display {
@@ -80,6 +88,7 @@ button.active-operator {
   font-size: 2rem;
 }
 
+.row-1,
 .row-3 {
   display: flex;
   justify-content: space-between;
@@ -89,6 +98,20 @@ button.active-operator {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+.col-1 button,
+.col-2 button,
+.col-3 button,
+.col-4 button {
+  height: 20%;
+}
+.col-5 button {
+  height: 20%;
+}
+.col-5 #add {
+  flex-grow: 2;
 }
 
 footer {
