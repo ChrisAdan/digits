@@ -6,12 +6,25 @@
   box-sizing: border-box;
 }
 
+:root {
+  --russian-violet: #300350;
+  --mardi-gras: #94167f;
+  --cerise-pink: #e93479;
+  --rajah: #f9ac53;
+  --persian-rose: #f62e97;
+  --persian-blue: #153cb4;
+  --electric-blue: #75f4f4;
+}
+
 ul {
   list-style: none;
 }
 
 button {
   padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body {
@@ -19,12 +32,28 @@ body {
   flex-direction: column;
   height: 100dvh;
   width: 100dvw;
+  background-color: var(--russian-violet);
 }
 
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--cerise-pink);
+  padding: 12px;
+  color: white;
+}
+.brand {
+  font-size: 3.5rem;
+}
+
+#about-button {
+  font-size: 2rem;
+  border-radius: 12px;
+  padding: 12px 24px;
+  background-color: var(--mardi-gras);
+  border: 3px solid var(--mardi-gras);
+  color: white;
 }
 
 section {
@@ -36,34 +65,24 @@ section {
 }
 
 .calculator-container {
-  border: 2px solid black;
+  border: 8px solid white;
+  color: white;
+  border-radius: 12px;
   min-width: 20%;
   display: flex;
-  flex-grow: 0;
+  flex: 1;
+  max-height: 40dvh;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   padding: 15px;
   font-size: 1.6rem;
   font-weight: bold;
-  gap: 12px;
 }
 
 .calculator-container button {
-  background-color: lightgray;
-  border-radius: 12px;
-}
-button.off-button {
-  flex: 0;
-}
-
-.calculator-keys {
-  display: flex;
-  gap: 4px;
-  justify-content: space-evenly;
-}
-
-button.active-operator {
-  background-color: red;
+  background-color: var(--mardi-gras);
+  border-radius: 6px;
+  border: 3px solid var(--mardi-gras);
 }
 
 .power-bar {
@@ -87,6 +106,15 @@ button.active-operator {
   padding: 6px;
   font-size: 2rem;
 }
+button.active-operator {
+  background-color: var(--persian-rose);
+  border: 3px solid var(--persian-rose);
+}
+.calculator-keys {
+  display: flex;
+  gap: 4px;
+  justify-content: space-evenly;
+}
 
 .row-1,
 .row-3 {
@@ -94,10 +122,15 @@ button.active-operator {
   justify-content: space-between;
 }
 
-[class*="col-"] {
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5 {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   gap: 4px;
 }
 
@@ -106,14 +139,24 @@ button.active-operator {
 .col-3 button,
 .col-4 button {
   height: 20%;
+  flex-grow: 1;
+  flex-basis: 0;
 }
 .col-5 button {
-  height: 20%;
+  max-height: 20%;
+  min-height: 20%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 0px;
 }
 .col-5 #add {
   flex-grow: 2;
+  max-height: 50%;
 }
 
 footer {
   text-align: right;
+  font-size: 2rem;
+  padding: 32px;
+  color: white;
 }
