@@ -20,6 +20,17 @@ function setup() {
     key.addEventListener("click", readKeyPress);
   });
   window.addEventListener("keyup", readKeyPress);
+  const aboutButton = document.querySelector("#about-button");
+  aboutButton.addEventListener("click", toggleAboutPage);
+  const closeButton = document.querySelector(".close-modal");
+  closeButton.addEventListener("click", toggleAboutPage);
+  let robots = [];
+  robots.push(document.querySelector(".default-robot"));
+  robots.push(document.querySelector(".happy-robot"));
+  robots.forEach((robot) => {
+    robot.addEventListener("mouseenter", toggleVisibility);
+    robot.addEventListener("mouseleave", toggleVisibility);
+  });
 }
 
 const readKeyPress = (key) => {
@@ -207,5 +218,21 @@ const routeKeyPress = (target) => {
           data.y = prevDisplay.y;
         }
       }
+  }
+};
+
+const toggleAboutPage = () => {
+  const modal = document.querySelector(".modal");
+  modal.classList.toggle("show");
+};
+
+const toggleVisibility = (robot) => {
+  robot.target.classList.toggle("hide");
+  if (robot.target.classList.contains("default-robot")) {
+    const happyRobot = document.querySelector(".happy-robot");
+    happyRobot.classList.toggle("hide");
+  } else {
+    const defaultRobot = document.querySelector(".default-robot");
+    defaultRobot.classList.toggle("hide");
   }
 };
