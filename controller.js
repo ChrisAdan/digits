@@ -226,6 +226,8 @@ const routeKeyPress = (target) => {
 const toggleAboutPage = () => {
   const modal = document.querySelector(".modal");
   modal.classList.toggle("show");
+  const calculator = document.querySelector(".main");
+  calculator.classList.toggle("hide");
 };
 
 const toggleVisibility = (robot) => {
