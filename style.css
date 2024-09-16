@@ -46,10 +46,15 @@ body {
   flex-direction: column;
   height: 100dvh;
   width: 100dvw;
-  /* background-color: var(--russian-violet); */
   background-image: url(img/destacada_vaporwave2-1536x1030.jpg);
   background-size: cover;
   box-shadow: inset 0px -40px 50px -20px black;
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    max-height: 100dvh;
+  }
 }
 
 nav {
@@ -81,6 +86,7 @@ nav {
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  padding: 24px;
 }
 
 .calculator-container {
@@ -90,7 +96,6 @@ nav {
   min-width: 20%;
   display: flex;
   flex: 1;
-  max-height: 50dvh;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 15px;
