@@ -144,6 +144,11 @@ button.active-operator {
   justify-content: space-evenly;
 }
 
+.calculator-keys .shade {
+  background-color: var(--persian-rose);
+  border: 3px solid var(--persian-rose);
+}
+
 .row-1,
 .row-3 {
   display: flex;

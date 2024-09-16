@@ -18,6 +18,8 @@ function setup() {
   // every button needs a listener
   Array.from(calculatorKeys).forEach((key) => {
     key.addEventListener("click", readKeyPress);
+    key.addEventListener("mouseenter", toggleShade);
+    key.addEventListener("mouseleave", toggleShade);
   });
   window.addEventListener("keyup", readKeyPress);
   const aboutButton = document.querySelector("#about-button");
@@ -235,4 +237,10 @@ const toggleVisibility = (robot) => {
     const defaultRobot = document.querySelector(".default-robot");
     defaultRobot.classList.toggle("hide");
   }
+};
+
+const toggleShade = (event) => {
+  console.log(event);
+  let target = event.target;
+  target.classList.toggle("shade");
 };
